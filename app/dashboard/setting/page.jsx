@@ -6,7 +6,7 @@ import React from 'react'
 const page = () => {
     const { user } = useUser()
     return (
-        <div className='h-screen w-full flex items-center justify-center flex-wrap' >
+        <div className='h-screen w-full flex items-center justify-center flex-wrap ' >
             <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-center md:gap-8">
                     <div
@@ -118,8 +118,8 @@ const page = () => {
                         </ul>
 
                         <h2
-                            href="#"
-                            className="mt-8 block rounded-full border border-indigo-600 bg-indigo-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700 hover:ring-1 hover:ring-indigo-700 focus:outline-none focus:ring active:text-indigo-500"
+
+                            className="mt-8 block rounded-full border border-indigo-600 bg-indigo-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700 hover:ring-1 hover:ring-indigo-700 focus:outline-none focus:ring active:text-indigo-500 cursor-pointer"
                         >
                             <Link href={'https://buy.stripe.com/test_6oEbJKaeN0Reeru3ce' + '?prefilled_email=' + user?.primaryEmailAddress.emailAddress} target='_blank'>  Get Started</Link>
                         </h2>
@@ -174,12 +174,12 @@ const page = () => {
 
                         </ul>
 
-                        <a
+                        <Link href={'/dashboard'}><h1
                             href="#"
-                            className="mt-8 block rounded-full border border-indigo-600 bg-white px-12 py-3 text-center text-sm font-medium text-indigo-600 hover:ring-1 hover:ring-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+                            className="mt-8 cursor-pointer block rounded-full border border-indigo-600 bg-white px-12 py-3 text-center text-sm font-medium text-indigo-600 hover:ring-1 hover:ring-indigo-600  active:text-indigo-500"
                         >
-                            Get Started
-                        </a>
+                            current plan
+                        </h1></Link>
                     </div>
                 </div>
             </div>

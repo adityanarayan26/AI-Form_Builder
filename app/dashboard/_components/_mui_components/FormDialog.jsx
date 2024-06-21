@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from 'react';
-
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -13,12 +12,21 @@ import { JsonForms } from '@/configs/schema';
 import moment from 'moment';
 import { db } from '@/configs';
 import { useUser } from '@clerk/nextjs';
-import { Loader2, Terminal } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/use-toast"
 import { Toaster } from '@/components/ui/toaster';
+import { eq } from 'drizzle-orm';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 export default function FormDialog() {
   const { toast } = useToast()
@@ -68,13 +76,41 @@ export default function FormDialog() {
     setOpen(false);
     setvalue('')
   };
+
   const [value, setvalue] = React.useState('')
+  const [jsonFormData, setjsonFormData] = React.useState()
+  React.useEffect(() => {
+    user && GetFormData()
+   
+  }, [user])
+
+
+  const GetFormData = async () => {
+    const result = await db.select().from(JsonForms).where(eq(JsonForms?.createdBy, user?.primaryEmailAddress?.emailAddress))
+    setjsonFormData(result)
+    console.log(result)
+
+  }
+
+
   return (
     <div>
       <Toaster />
-      <button  className='btn text-base' onClick={handleClickOpen}>
-        + Create Form
-      </button>
+     
+      {jsonFormData?.length == 3 ?
+
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger><Button className='cursor-not-allowed hover:bg-zinc-400'> + Create Form</Button></TooltipTrigger>
+            <TooltipContent className='select-none bg-indigo-700 text-white font-light'>
+              <p >Upgrade Subscription to create more ai forms✨</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        : < Button className=' text-base' onClick={handleClickOpen}>
+          + Create Form
+        </Button>}
 
       <Dialog
         open={open}
@@ -111,6 +147,6 @@ export default function FormDialog() {
           <Button variant='soft' color="success" onClick={OnCreateForm} >{loading ? <Loader2 className='animate-spin' /> : 'Create'}</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </div >
   );
 }
